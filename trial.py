@@ -12,17 +12,17 @@ nylas = APIClient(
 )  
  
 
-message = nylas.messages.all(limit=1000)
+message = nylas.messages
 # message = ""
 # print(message)
 
 
 
 # Specify the file name and open it in append mode ('a')
-file_name = "output.txt"
-with open(file_name, 'w', encoding='utf-8') as file:
-    # Write the content to the file
-    file.write(str(nylas.messages.all(limit=1000)))
+# file_name = "output.txt"
+# with open(file_name, 'w', encoding='utf-8') as file:
+#     # Write the content to the file
+#     file.write(str(nylas.messages.all(limit=1000)))
 
 
 
