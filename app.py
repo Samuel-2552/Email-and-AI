@@ -1,4 +1,4 @@
-from flask import Flask, session, request, redirect
+from flask import Flask, session, request, redirect, render_template
 import os
 from nylas import APIClient
 from dotenv import load_dotenv
@@ -25,6 +25,14 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY")  # Set a secret key for sess
 
 @app.route('/')
 def index():
+    
+
+    
+    return render_template('index.html')
+
+
+@app.route('/download')
+def download():
     message = nylas.messages
     file = []
     for mess in message:
@@ -49,11 +57,22 @@ def index():
     for i in range(len(ids)):
         file = nylas.files.get(ids[i])
         downloaded_file = file.download()
-        with open(filenames[i], 'wb') as f:
-            f.write(downloaded_file)
 
-    
-    return "Hello"
+        # Create a subdirectory for each file
+        file_directory = os.path.join("downloaded_files", str(i))
+        os.makedirs(file_directory, exist_ok=True)
+
+        # Get the filename
+        filename = filenames[i]
+
+        # Save the downloaded file inside the subdirectory
+        file_path = os.path.join(file_directory, filename)
+
+        with open(file_path, 'wb') as f:
+            f.write(downloaded_file)
+        
+    return "Successfull!"
+
 
 
 
