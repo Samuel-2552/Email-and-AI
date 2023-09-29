@@ -24,7 +24,7 @@ to_messages = []
 text = ""
 
 st.title('Email Dashboard')
-num = st.slider('How many emails?', 1, 1000, 50)
+num = st.slider('How many emails?', 1, 100, 20)
 
 # Get emails from your inbox folder
 f_messages = nylas.messages.where(in_='inbox', limit = num)

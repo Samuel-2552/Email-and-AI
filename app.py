@@ -26,10 +26,12 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY")  # Set a secret key for sess
 @app.route('/')
 def index():
     
+    return render_template('land.html')
 
-    
-    return render_template('index.html')
+@app.route('/load')
+def load():
 
+    return render_template('load.html')
 
 @app.route('/download')
 def download():
