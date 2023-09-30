@@ -143,6 +143,10 @@
             display: none;
         }
 
+        #graph{
+            width: 70%;
+        }
+
         /* Loader animation */
         @keyframes spin {
             0% {
@@ -223,7 +227,12 @@
                         // Display the result in the pop-up card
                         const onlineStatusCard = document.getElementById("online-status-card");
                         onlineStatusCard.style.backgroundColor = "green";
-                        document.getElementById("status-message").innerText = xhr.responseText;
+                        if(xhr.responseText.search('files/summary_statistics.png') > -1){
+                            statusMessage.innerHTML = "<img src={{ url_for('static', filename='summary_statistics.png')}}/ id = 'graph'>"
+                        }
+                        else{
+                            document.getElementById("status-message").innerText = xhr.responseText;
+                        }
                         onlineStatusCard.style.display = "block";
                         document.getElementById("back").style.filter = "blur(0px)";
                         //close function
