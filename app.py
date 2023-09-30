@@ -109,6 +109,7 @@ def process_file():
 
     if extension == 'pdf':
         summary=pdf(filename)
+        return jsonify(f'Summary of the file:\n {summary}')
 
     # Assume you have some processing logic here
     # For demonstration, we'll just store the filename as content

@@ -105,6 +105,7 @@
             border-radius: 4px;
             width: 50%;
             text-align: center;
+            z-index: 2000;
         }
 
         .status-close-button {
@@ -112,10 +113,12 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            z-index: 2001;
         }
 
         .status-close-button:hover {
             color: white;
+            
         }
 
 
@@ -137,6 +140,7 @@
             /* Half of the loader's width */
             z-index: 9999;
             /* Place it in front of other page elements */
+            display: none;
         }
 
         /* Loader animation */
@@ -164,6 +168,7 @@
             // Show the loader while waiting for the response
             const loader = document.getElementById("loader");
             loader.style.display = "block";
+            document.getElementById("back").style.filter="blur(2px)";
 
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/process_file?id=" + id + "&filename=" + filename, true);
@@ -178,6 +183,7 @@
                         onlineStatusCard.style.backgroundColor = "green";
                         document.getElementById("status-message").innerText = xhr.responseText;
                         onlineStatusCard.style.display = "block";
+                        document.getElementById("back").style.filter="blur(0px)";
                         setTimeout(() => {
                             onlineStatusCard.style.display = "none";
                         }, 15000);
@@ -201,36 +207,36 @@
 
 
     </script>
-
-    <center>
-        <h1 style="color: white;">Click on a file to get Insights</h1>
-    </center>
-    <br>
-    <center>
-        <h3 style="color: white;">OR</h3>
-    </center>
-    <br>
-    <!-- Create the button element with the CSS class -->
-    <center><button class="nice-button">Get Insights on all Attachments!</button></center>
-    <br><br>
-    <div>
-        <!-- Check if there are any attachments, and display a message if not -->
-        {% if file_data %}
-        <!-- Loop through your list of filenames and IDs and create boxes -->
-        {% for filename, id, icon_class in file_data %}
-        <div class="file-box {{ filename.split('.')[-1] }}" onclick="handleClick('{{ id }}', '{{ filename }}')">
-            <i class="{{ icon_class }}" style="font-size:48px;color:red"></i>
-            <p>{{ filename }}</p>
-        </div>
-        {% endfor %}
-        {% else %}
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id="back">
         <center>
-            <h1 style="color: white;">You have no attachments!</h1>
+            <h1 style="color: white;">Click on a file to get Insights</h1>
         </center>
-        {% endif %}
+        <br>
+        <center>
+            <h3 style="color: white;">OR</h3>
+        </center>
+        <br>
+        <!-- Create the button element with the CSS class -->
+        <center><button class="nice-button">Get Insights on all Attachments!</button></center>
+        <br><br>
+        <div>
+            <!-- Check if there are any attachments, and display a message if not -->
+            {% if file_data %}
+            <!-- Loop through your list of filenames and IDs and create boxes -->
+            {% for filename, id, icon_class in file_data %}
+            <div class="file-box {{ filename.split('.')[-1] }}" onclick="handleClick('{{ id }}', '{{ filename }}')">
+                <i class="{{ icon_class }}" style="font-size:48px;color:red"></i>
+                <p>{{ filename }}</p>
+            </div>
+            {% endfor %}
+            {% else %}
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <center>
+                <h1 style="color: white;">You have no attachments!</h1>
+            </center>
+            {% endif %}
+        </div>
     </div>
-
 </body>
 
 </html>
