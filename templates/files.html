@@ -118,7 +118,7 @@
 
         .status-close-button:hover {
             color: white;
-            
+
         }
 
 
@@ -158,43 +158,9 @@
 
 <body>
 
-    <script>
-
-        const onlineStatusCard = document.getElementById("online-status-card");
-        const statusMessage = document.getElementById("status-message");
-        const status_closeButton = document.getElementById("status-close-button");
-
-        function handleClick(id, filename) {
-            // Show the loader while waiting for the response
-            const loader = document.getElementById("loader");
-            loader.style.display = "block";
-            document.getElementById("back").style.filter="blur(2px)";
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/process_file?id=" + id + "&filename=" + filename, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    // Hide the loader
-                    loader.style.display = "none";
-
-                    if (xhr.status === 200) {
-                        // Display the result in the pop-up card
-                        const onlineStatusCard = document.getElementById("online-status-card");
-                        onlineStatusCard.style.backgroundColor = "green";
-                        document.getElementById("status-message").innerText = xhr.responseText;
-                        onlineStatusCard.style.display = "block";
-                        document.getElementById("back").style.filter="blur(0px)";
-                        setTimeout(() => {
-                            onlineStatusCard.style.display = "none";
-                        }, 15000);
-                    }
-                }
-            };
-            xhr.send();
-        }
-    </script>
+    
     <div class="logo">
-        <img src="{{ url_for('static', filename='logo1.png') }}" width="100px" height="auto" alt="Logo">
+        <img src="{{ url_for('static', filename='logo1.png') }}" width="200px" height="auto" alt="Logo">
     </div>
 
     <!-- Loader element -->
@@ -202,11 +168,8 @@
     <div id="online-status-card" class="online-status-card">
         <span id="status-close-button" class="status-close-button">&times;</span>
         <p id="status-message"></p>
-
     </div>
 
-
-    </script>
     <div id="back">
         <center>
             <h1 style="color: white;">Click on a file to get Insights</h1>
@@ -237,6 +200,43 @@
             {% endif %}
         </div>
     </div>
+    <script>
+
+        const onlineStatusCard = document.getElementById("online-status-card");
+        const statusMessage = document.getElementById("status-message");
+        const status_closeButton = document.getElementById("status-close-button");
+
+        function handleClick(id, filename) {
+            // Show the loader while waiting for the response
+            const loader = document.getElementById("loader");
+            loader.style.display = "block";
+            document.getElementById("back").style.filter = "blur(2px)";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/process_file?id=" + id + "&filename=" + filename, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // Hide the loader
+                    loader.style.display = "none";
+
+                    if (xhr.status === 200) {
+                        // Display the result in the pop-up card
+                        const onlineStatusCard = document.getElementById("online-status-card");
+                        onlineStatusCard.style.backgroundColor = "green";
+                        document.getElementById("status-message").innerText = xhr.responseText;
+                        onlineStatusCard.style.display = "block";
+                        document.getElementById("back").style.filter = "blur(0px)";
+                        //close function
+                    }
+                }
+            };
+            xhr.send();
+        }
+        status_closeButton.addEventListener('click', function(){
+            onlineStatusCard.style.display = "none";
+        })
+        
+    </script>
 </body>
 
 </html>
