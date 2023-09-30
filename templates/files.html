@@ -106,6 +106,7 @@
             width: 50%;
             text-align: center;
             z-index: 2000;
+            overflow: scroll;
         }
 
         .status-close-button {
@@ -143,8 +144,8 @@
             display: none;
         }
 
-        #graph{
-            width: 70%;
+        .graph{
+            width: 55%;
         }
 
         /* Loader animation */
@@ -184,7 +185,7 @@
         </center>
         <br>
         <!-- Create the button element with the CSS class -->
-        <center><button class="nice-button">Get Insights on all Attachments!</button></center>
+        <center><button class="nice-button" id="Insights">Get Insights on all Attachments!</button></center>
         <br><br>
         <div>
             <!-- Check if there are any attachments, and display a message if not -->
@@ -209,6 +210,7 @@
         const onlineStatusCard = document.getElementById("online-status-card");
         const statusMessage = document.getElementById("status-message");
         const status_closeButton = document.getElementById("status-close-button");
+        const Insights = document.getElementById("Insights");
 
         function handleClick(id, filename) {
             // Show the loader while waiting for the response
@@ -228,7 +230,7 @@
                         const onlineStatusCard = document.getElementById("online-status-card");
                         onlineStatusCard.style.backgroundColor = "green";
                         if(xhr.responseText.search('files/summary_statistics.png') > -1){
-                            statusMessage.innerHTML = "<img src={{ url_for('static', filename='summary_statistics.png')}}/ id = 'graph'>"
+                            statusMessage.innerHTML = "<img src={{ url_for('static', filename='summary_statistics.png')}}/ class = 'graph'>"
                         }
                         else{
                             document.getElementById("status-message").innerText = xhr.responseText;
@@ -243,6 +245,34 @@
         }
         status_closeButton.addEventListener('click', function(){
             onlineStatusCard.style.display = "none";
+            statusMessage.innerHTML = ""
+
+        })
+
+        Insights.addEventListener('click', function(){
+            const loader = document.getElementById("loader");
+            loader.style.display = "block";
+            document.getElementById("back").style.filter = "blur(2px)";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/process_all", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // Hide the loader
+                    loader.style.display = "none";
+
+                    if (xhr.status === 200) {
+                        // Display the result in the pop-up card
+                        onlineStatusCard.style.backgroundColor = "green";
+                        // var jsonData = JSON.parse(xhr.responseText);
+                        statusMessage.innerHTML = "<div><img src={{ url_for('static', filename='summary_statistics1.png')}}/ class = 'graph'><img src={{ url_for('static', filename='summary_statistics2.png')}}/ class = 'graph'></div>"
+                        //close function
+                        onlineStatusCard.style.display = "block";
+                        document.getElementById("back").style.filter = "blur(0px)";
+                    }
+                }
+            };
+            xhr.send();
         })
         
     </script>
