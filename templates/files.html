@@ -229,7 +229,7 @@
                         // Display the result in the pop-up card
                         const onlineStatusCard = document.getElementById("online-status-card");
                         onlineStatusCard.style.backgroundColor = "green";
-                        if(xhr.responseText.search('files/summary_statistics.png') > -1){
+                        if(xhr.responseText.search('static/summary_statistics.png') > -1){
                             statusMessage.innerHTML = "<img src={{ url_for('static', filename='summary_statistics.png')}}/ class = 'graph'>"
                         }
                         else{
