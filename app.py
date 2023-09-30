@@ -8,6 +8,10 @@ import easyocr
 from transformers import BartForConditionalGeneration, BartTokenizer
 import pandas as pd
 import matplotlib.pyplot as plt
+from docx import Document
+import json
+import seaborn as sns
+
 
 # Load environment variables from the .env file in the current directory
 load_dotenv()
@@ -138,13 +142,26 @@ def process_file():
         plt.tight_layout()
 
         # Save the plot as an image (e.g., PNG)
-        plt.savefig('files/summary_statistics.png')
+        plt.savefig('static/summary_statistics.png')
 
         # Close the plot to release resources (optional)
         plt.close()
-        return f"Summary of your {filename}:\n 'files/summary_statistics.png'"
+        return f"Summary of your {filename}:\n 'static/summary_statistics.png'"
     
+    elif extension == 'docx':
+        filename = "files/" + filename
+        doc = Document(filename)
+        text = ''
 
+        for paragraph in doc.paragraphs:
+            text += paragraph.text
+        
+        print(text)
+
+        # summary = summarization(text)
+        # print(summary)
+
+        return jsonify(f'Summary of the {filename}:\n {text}')
     
 
 
@@ -154,6 +171,36 @@ def process_file():
     # Return the processed content as a response with the filename inserted
     return jsonify(f'Summary of the file: {summary}')
 
+
+@app.route('/process_all', methods=['GET'])
+def process_all():
+    message = nylas.messages
+    # Serialize the complex data
+    serialized_data = serialize_complex_data(message)
+
+    # Specify the file name and open it in write mode ('w')
+    file_name = "files/data.json"
+    with open(file_name, 'w', encoding='utf-8') as json_file:
+        # Write the serialized data to the file
+        json.dump(serialized_data, json_file, indent=4)
+
+    df=pd.read_json('files/data.json')
+    df["recived_day"]=df.received_at.dt.day
+    df["recived_hour"]=df.received_at.dt.hour
+    df["from_email"]=df["from"].apply(lambda x: x[0]["email"])
+    df["from_name"]=df["from"].apply(lambda x: x[0]["name"])
+    df["email_from"]=df["from"].apply(lambda x: x[0]["email"])
+    df_g=df.groupby("recived_hour",as_index=False).count()[["recived_hour","received_at"]]
+    plt.bar(df_g.recived_hour,df_g.received_at)
+    plt.xticks(range(0,24),range(0,24))
+    # Save the plot as an image (e.g., PNG)
+    plt.savefig('static/summary_statistics1.png')
+    plt.figure(figsize=(4,4))
+    sns.jointplot(data=df,x="recived_day",y="recived_hour",kind="scatter")
+    plt.yticks(range(0,24),range(0,24))
+    plt.savefig('static/summary_statistics2.png')
+
+    return jsonify('static/summary_statistics1.png','static/summary_statistics2.png')
 
 def image(filename):
     filename = "files/" + filename
@@ -219,7 +266,33 @@ def get_file_icon(filename):
     else:
         return 'fa fa-file'  # Default icon
 
+# Custom function to serialize complex data
+def serialize_complex_data(data):
+    serialized_data = []
+    for item in data:
+        # Serialize custom objects or handle other non-serializable data as needed
+        received_at_str = item['received_at'].strftime('%Y-%m-%d %H:%M:%S')  # Convert datetime to string
+        serialized_item = {
+            'bcc': item['bcc'],
+            'cc': item['cc'],
+            'received_at': received_at_str,
+            'events': item['events'],
+            'files': item['files'],
+            'from': item['from'],
+            'to': item['to'],
+            'reply_to': item['reply_to'],
+            'object':item['object'],
+            'unread': item['unread'],
+            'starred':item['starred'],
+            '_labels': item['_labels'],
+            'snippet':item['snippet'],
+            'subject':item['subject'],
+            'body': item['body'],
 
+            # Add other serializable fields as needed
+        }
+        serialized_data.append(serialized_item)
+    return serialized_data
 
 
 if __name__ == "__main__":
