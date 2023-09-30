@@ -1,7 +1,10 @@
-from flask import Flask, session, request, redirect, render_template
+from flask import Flask, session, request, redirect, render_template, jsonify
 import os
 from nylas import APIClient
 from dotenv import load_dotenv
+import pdfplumber
+import torch
+from transformers import BartForConditionalGeneration, BartTokenizer
 
 # Load environment variables from the .env file in the current directory
 load_dotenv()
@@ -20,6 +23,9 @@ nylas = APIClient(
     ACCESS_TOKEN
 )  
 
+
+file_data = ''
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")  # Set a secret key for session management
 
@@ -35,6 +41,7 @@ def load():
 
 @app.route('/download')
 def download():
+    global file_data
     message = nylas.messages
     file = []
     for mess in message:
@@ -42,7 +49,6 @@ def download():
     
     filenames = []
     ids = []
-    flag=0
 
     for item in file:
         if type(item) is list:
@@ -50,33 +56,117 @@ def download():
                 if type(sub_item) is dict:
                     filename = sub_item.get("filename")
                     id_value = sub_item.get("id")
-                    print(filename, id_value)
+                    # print(filename, id_value)
                     if filename is not None:
                         filenames.append(filename)
                         if id_value is not None:
                             ids.append(id_value)
 
-    for i in range(len(ids)):
-        file = nylas.files.get(ids[i])
-        downloaded_file = file.download()
+    file_data = zip(filenames, ids)
 
-        # Create a subdirectory for each file
-        file_directory = os.path.join("downloaded_files", str(i))
-        os.makedirs(file_directory, exist_ok=True)
+    file_data_with_icons = [(filename, id, get_file_icon(filename)) for filename, id in file_data]
 
-        # Get the filename
-        filename = filenames[i]
+    # print(file_data_with_icons)
 
-        # Save the downloaded file inside the subdirectory
-        file_path = os.path.join(file_directory, filename)
+    # for i in range(len(ids)):
+    #     file = nylas.files.get(ids[i])
+    #     downloaded_file = file.download()
 
-        with open(file_path, 'wb') as f:
-            f.write(downloaded_file)
+    #     # Create a subdirectory for each file
+    #     file_directory = os.path.join("downloaded_files", str(i))
+    #     os.makedirs(file_directory, exist_ok=True)
+
+    #     # Get the filename
+    #     filename = filenames[i]
+
+    #     # Save the downloaded file inside the subdirectory
+    #     file_path = os.path.join(file_directory, filename)
+
+    #     with open(file_path, 'wb') as f:
+    #         f.write(downloaded_file)
         
-    return "Successfull!"
+    return render_template('files.html', file_data=file_data_with_icons)
+
+@app.route('/process_file', methods=['GET'])
+def process_file():
+    # Get the file ID and filename from the request
+    file_id = request.args.get('id')
+    filename = request.args.get('filename')
+
+    print(filename, file_id)
+
+    file = nylas.files.get(file_id)
+    downloaded_file = file.download()
+
+    file_directory = os.path.join("files")
+
+    file_path = os.path.join(file_directory, filename)
+
+    with open(file_path, 'wb') as f:
+        f.write(downloaded_file)
+
+    extension = filename.split('.')[-1].lower()
+
+    if extension == 'pdf':
+        summary=pdf(filename)
+
+    # Assume you have some processing logic here
+    # For demonstration, we'll just store the filename as content
+
+    # Return the processed content as a response with the filename inserted
+    return jsonify(f'Summary of the file: {summary}')
+
+
+def pdf(filename):
+    
+    filename = "files/" + filename
+    # Open the PDF file
+    with pdfplumber.open(filename) as pdf:
+        # Initialize an empty string to store extracted text
+        text = ''
+
+        # Iterate through each page and extract text
+        for page in pdf.pages:
+            text += page.extract_text()
+
+    # Load the pre-trained BART model and tokenizer
+    model_name = "facebook/bart-large-cnn"
+    model = BartForConditionalGeneration.from_pretrained(model_name)
+    tokenizer = BartTokenizer.from_pretrained(model_name)
+
+    # Tokenize and encode the input text
+    inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True, padding=True)
+
+    # Generate the summary
+    summary_ids = model.generate(inputs["input_ids"], num_beams=4, min_length=30, max_length=200, early_stopping=True)
+
+    # Decode the generated summary
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+
+    # Print the summary
+    print(summary)
+    return summary
+
+
+def get_file_icon(filename):
+    extension = filename.split('.')[-1].lower()
+    if extension == 'pdf':
+        return 'fa fa-file-pdf-o'
+    elif extension == 'csv':
+        return 'fa fa-file-excel-o'
+    elif extension in ('jpg', 'jpeg', 'png'):
+        return 'fa fa-file-image-o'
+    elif extension == 'xlsx':
+        return 'fa fa-file-excel-o'
+    elif extension == 'docx':
+        return 'fa fa-file-word-o'
+    elif extension == 'pptx':
+        return 'fa fa-file-powerpoint-o'
+    else:
+        return 'fa fa-file'  # Default icon
 
 
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
