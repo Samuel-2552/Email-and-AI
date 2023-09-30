@@ -4,6 +4,7 @@ from nylas import APIClient
 from dotenv import load_dotenv
 import pdfplumber
 import torch
+import easyocr
 from transformers import BartForConditionalGeneration, BartTokenizer
 
 # Load environment variables from the .env file in the current directory
@@ -108,8 +109,20 @@ def process_file():
     extension = filename.split('.')[-1].lower()
 
     if extension == 'pdf':
-        summary=pdf(filename)
-        return jsonify(f'Summary of the file:\n {summary}')
+        text=pdf(filename)
+        print(text)
+        summary = summarization(text)
+        print(summary)
+        return jsonify(f'Summary of the {filename}:\n {summary}')
+    
+    elif extension in ('jpg', 'jpeg', 'png'):
+        text=image(filename)
+        print(text)
+        summary = summarization(text)
+        print(summary)
+        return jsonify(f'Summary of the {filename}:\n {summary}')
+    
+
 
     # Assume you have some processing logic here
     # For demonstration, we'll just store the filename as content
@@ -117,6 +130,18 @@ def process_file():
     # Return the processed content as a response with the filename inserted
     return jsonify(f'Summary of the file: {summary}')
 
+
+def image(filename):
+    filename = "files/" + filename
+    reader = easyocr.Reader(['en'])  # Replace 'en' with the language you need
+    result = reader.readtext(filename)
+    text=''
+    for detection in result:
+        print(detection[1])
+        text = text + detection[1]
+
+    # print(result)
+    return text
 
 def pdf(filename):
     
@@ -130,7 +155,11 @@ def pdf(filename):
         for page in pdf.pages:
             text += page.extract_text()
 
-    # Load the pre-trained BART model and tokenizer
+   
+    return text
+
+def summarization(text):
+     # Load the pre-trained BART model and tokenizer
     model_name = "facebook/bart-large-cnn"
     model = BartForConditionalGeneration.from_pretrained(model_name)
     tokenizer = BartTokenizer.from_pretrained(model_name)
