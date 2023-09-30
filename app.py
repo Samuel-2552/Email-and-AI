@@ -6,6 +6,8 @@ import pdfplumber
 import torch
 import easyocr
 from transformers import BartForConditionalGeneration, BartTokenizer
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # Load environment variables from the .env file in the current directory
 load_dotenv()
@@ -121,6 +123,28 @@ def process_file():
         summary = summarization(text)
         print(summary)
         return jsonify(f'Summary of the {filename}:\n {summary}')
+    
+    elif extension == 'xlsx':
+        filename = "files/" + filename
+        df_excel = pd.read_excel(filename)
+        summary_stats = df_excel.describe()
+        # Create a bar plot
+        summary_stats.plot(kind='bar', figsize=(10, 6))
+        plt.title('Summary Statistics')
+        plt.xlabel('Statistics')
+        plt.ylabel('Values')
+        plt.legend(loc='upper right')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        plt.tight_layout()
+
+        # Save the plot as an image (e.g., PNG)
+        plt.savefig('files/summary_statistics.png')
+
+        # Close the plot to release resources (optional)
+        plt.close()
+        return f"Summary of your {filename}:\n 'files/summary_statistics.png'"
+    
+
     
 
 
