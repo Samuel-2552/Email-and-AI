@@ -21,7 +21,7 @@ AI Infused Inbox is a Flask web application developed for the Nylas and AI Hacka
 1. Clone this repository:
 
    shell
-   git clone https://github.com/yourusername/ai-infused-inbox.git
+   git clone (https://img.shields.io/github/v/release/Samuel-2552/Email-and-AI)
    
 
 2. Install the required dependencies:
