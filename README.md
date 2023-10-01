@@ -1,7 +1,6 @@
 # AI Infused Inbox
 
 ![GitHub license](https://img.shields.io/github/license/Samuel-2552/Email-and-AI)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Samuel-2552/Email-and-AI)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 
 #### Description
