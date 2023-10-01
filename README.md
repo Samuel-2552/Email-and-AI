@@ -1,7 +1,7 @@
 # AI Infused Inbox
 
-![GitHub license](https://img.shields.io/github/license/yourusername/ai-infused-inbox)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/yourusername/ai-infused-inbox)
+![GitHub license](https://img.shields.io/github/license/Samuel-2552/ai-infused-inbox)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Samuel-2552/ai-infused-inbox)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 
 #### Description
