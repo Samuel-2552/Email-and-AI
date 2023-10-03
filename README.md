@@ -1,58 +1,80 @@
-# AI Infused Inbox
+# Send and read email Nylas sample app
 
-![GitHub license](https://img.shields.io/github/license/Samuel-2552/Email-and-AI)
-![GitHub release (latest by date)](https://github.com/Samuel-2552/Email-and-AI.git)
-![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
+A Python implementation with Flask.
 
-#### Description
+## Requirements
 
-AI Infused Inbox is a Flask web application developed for the Nylas and AI Hackathon. This application integrates with the **Nylas API** to fetch emails that contain attachments. It then uses **AI-powered algorithms** to analyze the type of attachment and extract its content, providing a summary to the user.
+- Python 3.7 or later
+- [a .env file with your Quickstart app secrets](#set-up-your-env-file)
 
-#### Features
+### Python set up
 
-- *Fetch emails with attachments from your inbox.*
-- *Automatically classify attachment types (e.g., documents, images, PDFs).*
-- *Extract and summarize the content of attachments.*
-- *User-friendly web interface for easy interaction.*
-- *Real-time updates and notifications.*
+If you use a `python` backend for your demo application, make sure you have `python 3.7` or later installed. You can check what version you have by running:
 
-#### Installation
+```bash
+python3 --version
+```
 
-1. Clone this repository:
+## Running this app independently
 
-   shell
-   git clone https://github.com/Samuel-2552/Email-and-AI.git
-   
+### Set up your `.env` file
 
-2. Install the required dependencies:
+Go to the Nylas Dashboard, and choose the Quickstart Application.
 
-   shell
-   pip install -r requirements.txt
-   
+Click **App Settings** to see the `client_id` and `client_secret` for the Quickstart app.
 
-3. Set up your Nylas API credentials in `config.py`:
+Add these to a `.env` in this directory as in the example below.
 
-   python
-   NYLAS_API_KEY = "YOUR_API_KEY_HERE"
-   
+```yaml
+# Nylas application keys - see https://developer.nylas.com/docs/developer-guide/authentication/authorizing-api-requests/#sdk-authentication
+CLIENT_ID=client_id...
+CLIENT_SECRET=client_secret...
+```
 
-4. Run the application:
+### Create and activate a new virtual environment
 
-   shell
-   python app.py
-   
+**MacOS / Unix**
 
-#### Usage
+```bash
+python3 -m venv env
+source env/bin/activate
+```
 
-1. Visit `http://localhost:5000` in your web browser.
-2. Log in with your Nylas account.
-3. Explore your AI-infused inbox with automated content summaries!
+**Windows (PowerShell)**
 
-#### Contributing
+```bash
+python3 -m venv env
+.\env\Scripts\activate.bat
+```
 
-Contributions are welcome! 
-*Please see our [contributing guidelines](CONTRIBUTING.md) for more details.*
+### Install Python dependencies
 
-#### License
+Run the following command to install the Python dependencies for this sample app.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```bash
+pip install -r requirements.txt
+```
+
+The `requirements.txt` in this sample already includes the Nylas package. If you were installing this on your own app, you would add the package as a dependency by running `pip install nylas`.
+
+### Export and run the backend server locally
+
+Set your Flask app file, and start the backend server.
+
+**MacOS / Unix**
+
+```bash
+export FLASK_APP=server.py
+python3 -m flask run --port=9000
+```
+
+**Windows (PowerShell)**
+
+```bash
+$env:FLASK_APP=server.py
+python3 -m flask run --port=9000
+```
+
+Your backend server is now running on `localhost:9000` and you can now make API calls, or start a frontend for this sample application to run on top of it.
+
+Start the backend before you start the frontend. You will need two terminal sessions so you can run both at the same time. (See the README file in the `frontend` folder for more information.)

@@ -1,0 +1,23 @@
+.att-container, .att-item-viewer{
+    width: 50%;
+    background-color: whitesmoke;
+    overflow: scroll;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.att-items{
+    border-radius: 10px;
+    height: fit-content;
+    padding: 5px;
+    background-color: rgb(165, 201, 231);
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+    cursor:pointer;
+}
+
+.graph_image{
+    width: 100%;
+    height: inherit;
+}
