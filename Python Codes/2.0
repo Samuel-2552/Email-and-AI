@@ -31,6 +31,7 @@ df5=pd.DataFrame(df.file_type.value_counts().reset_index())
 
 plt.pie(df5["count"], labels=df5["file_type"],autopct="%.2f")
 plt.ylabel("")
+plt.savefig("plt_pie.png")
 plt.show()
 #display content
 
@@ -43,6 +44,7 @@ represents file types in emails, showing the proportion of each type, aiding qui
 df2=df.from_email.value_counts().reset_index()[:5]
 sns.barplot(data=df2,x="from_email",y="count")
 plt.xticks(rotation=90)
+plt.savefig("plt_bar1.png")
 plt.show()
 """ This bar chart shows the top 5 email which has sent high number of mails"""
 
@@ -51,6 +53,7 @@ plt.show()
 
 df_g=df.groupby("recived_hour",as_index=False).count()[["recived_hour","received_at"]]
 plt.bar(df_g.recived_hour,df_g.received_at)
+plt.savefig("plt_bar2.png")
 plt.xticks(range(0,24),range(0,24))
 
 """This plot shows the number of mails recived per hour"""
@@ -62,6 +65,7 @@ keywords=['districts', 'fy', 'revenue', 'top', '5', 'any', 'growth', 'registrati
 plt.figure(figsize=(4,4))
 sns.jointplot(data=df,x="recived_day",y="recived_hour",kind="scatter")
 plt.yticks(range(0,24),range(0,24))
+plt.savefig("plt_jp.png")
 """This code generates a scatterplot with 
 custom y-axis labels, illustrating the relationship between the day and hour of email receipt for data analysis"""
 
@@ -74,6 +78,7 @@ wordcloud = WordCloud(width=800, height=400,background_color="cyan").generate(te
 plt.figure(figsize=(10, 5))
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis('off')  # Remove axis
+plt.savefig("plt_wc.png")
 plt.show()
 
 #display content
@@ -89,6 +94,7 @@ df["content_length"]=df.clean_content.apply(len)
 
 sns.histplot(df.content_length,bins=30)
 plt.xlim(0,18000)
+plt.savefig("plt_hist.png")
 
 #display content
 
