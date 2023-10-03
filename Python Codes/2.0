@@ -1,0 +1,67 @@
+#df2 for bar plot
+
+df2=df.from_email.value_counts().reset_index()[:5]
+sns.barplot(data=df2,x="from_email",y="count")
+plt.xticks(rotation=90)
+plt.show()
+
+#for word cloud get all keywords in to form of list with variable name keywords
+
+from wordcloud import WordCloud
+
+text_data = " ".join(keywords)
+
+wordcloud = WordCloud(width=800, height=400,background_color="cyan").generate(text_data)
+
+plt.figure(figsize=(10, 5))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')  # Remove axis
+plt.show()
+
+#display content
+
+'''This word cloud visually 
+highlights keywords extracted from email summaries, providing a quick and eye-catching way to identify key themes and topics'''
+
+#new column creation
+
+df["contnent_length"]=df.clean_content.apply(len)
+
+#hist plot for knowing the distribution of the recived emails
+
+sns.distplot(df.contnent_length,kde=False,bins=30)
+plt.xlim(0,18000)
+plt.yticks(range(14),range(14))
+
+#display content
+
+'''This histplot visually displays the 
+distribution of email content lengths in your received emails, helping you identify common lengths and outliers efficiently.'''
+
+#new column creation
+df["date"]=df.received_at.dt.date
+
+#creation of new varable for ploting lineplot
+df4=pd.DataFrame(df.date.value_counts().reset_index())
+
+#lineplot
+sns.lineplot(data=df4,x="date",y="count",color="r")
+sns.despine()
+
+#display content
+
+'''This lineplot illustrates 
+how the number of received emails varies over time, helping you track trends and patterns in your email activity by date.'''
+
+#new variable for pie-chart for knowing the percentage contribution
+
+df5=pd.DataFrame(df.file_type.value_counts().reset_index())
+
+#pie-chart
+
+plt.pie(df5["count"], labels=df5["file_type"],autopct="%.2f")
+
+#display content
+
+'''This pie chart visually 
+represents file types in emails, showing the proportion of each type, aiding quick comprehension of email content diversity'''
