@@ -40,10 +40,10 @@ represents file types in emails, showing the proportion of each type, aiding qui
 
 
 #df2 for bar plot
-
+plt.figure(figsize=(8,5))
 df2=df.from_email.value_counts().reset_index()[:5]
 sns.barplot(data=df2,x="from_email",y="count")
-plt.xticks(rotation=90)
+plt.xticks(fontsize=8,rotation=8)
 plt.savefig("plt_bar1.png")
 plt.show()
 """ This bar chart shows the top 5 email which has sent high number of mails"""
