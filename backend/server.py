@@ -6,7 +6,7 @@ from utils.mock_db import db
 from io import BytesIO
 from flask import Flask, request, send_file, g, jsonify, url_for
 from flask_cors import CORS
-
+import matplotlib
 from nylas import APIClient
 from nylas.client.restful_models import Webhook
 from nylas.services.tunnel import open_webhook_tunnel
@@ -21,6 +21,7 @@ from docx import Document
 import json
 import seaborn as sns
 import openpyxl
+matplotlib.use('Agg')
 
 # Load environment variables from the .env file
 load_dotenv()
