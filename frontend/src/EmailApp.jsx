@@ -5,6 +5,7 @@ import EmailDetail from './EmailDetail';
 import SendEmails from './SendEmails';
 import './styles/email.scss';
 import EmailAttachments from './EmailAttachments';
+import Loader from './Loader';
 
 function EmailApp({
   userEmail,
@@ -52,7 +53,7 @@ function EmailApp({
     <>
       <div className="email-app">
         {isLoading ? (
-          <p className="loading-text">Loading emails...</p>
+          <p className="loading-text" style={{color: 'white'}}>Loading emails...</p>
         ) : emails.length ? (
           // <>
           //   <EmailList

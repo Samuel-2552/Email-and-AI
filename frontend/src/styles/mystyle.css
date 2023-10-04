@@ -1,12 +1,14 @@
-.att-container, .att-item-viewer{
+
+.att-container,
+.att-item-viewer {
     width: 50%;
-    background-color: whitesmoke;
-    overflow: scroll;
+    background-color: rgba(86, 85, 85, 0.129);
+    overflow:auto !important;
     padding: 5px;
     border-radius: 15px;
 }
 
-.att-container{
+.att-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -15,20 +17,300 @@
     column-gap: 30px;
 }
 
-.att-items{
+.att-item-viewer{
+    color: rgba(255, 255, 255, 0.719);
+    position: relative;
+}
+
+.att-item-viewer .loading{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.att-container::-webkit-scrollbar, .att-item-viewer::-webkit-scrollbar{
+    width: 10px;
+}
+
+.att-container::-webkit-scrollbar-thumb, .att-item-viewer::-webkit-scrollbar-thumb{
+    background: #311739;
+    border-radius: 5px;
+}
+
+.att-items {
     border-radius: 10px;
     height: fit-content;
     padding: 5px;
-    background-color: rgb(165, 201, 231);
+    background: linear-gradient(30deg, #1e1137 20%, #621d4b);
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 5px;
-    cursor:pointer;
+    cursor: pointer;
     width: 30%;
     height: 30%;
+    position: relative;
+    color: rgba(255, 255, 255, 0.734);
 }
 
-.graph_image{
+.graph_image {
     width: 100%;
     height: inherit;
+}
+
+.file-logo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: rgba(255, 255, 255, 0.422);
+    padding: 5px;
+}
+
+.file-logo svg {
+    width: 30px;
+    height: 30px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    background: linear-gradient(42deg, #1e1137, #3a1330);
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background: linear-gradient(42deg, #070c18, #1f141c);
+    opacity: 0.9;
+} */
+
+/*--------------------
+Landing
+--------------------*/
+.landing {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 710px;
+    height: 520px;
+    margin: 25px auto;
+    box-shadow: 0 3px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.landing .logo svg {
+    fill: #1E1C45;
+}
+
+.landing .base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding: 38px;
+    color: #082352;
+    background: #fff;
+}
+
+.landing .image {
+    display: none;
+}
+
+/*--------------------
+Copy
+--------------------*/
+.copy {
+    position: relative;
+    z-index: 2;
+}
+
+.copy .title {
+    font-size: 52px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 30px;
+    margin-left: -3px;
+    background-image: linear-gradient(45deg, #191A42, #B1499C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.copy .title small {
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-top: 50px;
+    line-height: 1;
+    display: block;
+    text-indent: 3px;
+}
+
+.copy .text {
+    color: #282652;
+    width: 400px;
+    font-size: 90%;
+}
+
+.copy .cta {
+    cursor: pointer;
+    margin-top: 40px;
+    background: linear-gradient(25deg, #2f2d56, #6e355b);
+    color: #fff;
+    text-transform: uppercase;
+    display: inline-block;
+    border-radius: 30px;
+    text-decoration: none;
+    padding: 10px 30px;
+    font-weight: 600;
+}
+
+/*--------------------
+Overlay
+--------------------*/
+.base.overlay {
+    z-index: 2;
+    -webkit-clip-path: polygon(375px 0, 710px 0, 710px 530px, 469px 530px);
+    clip-path: polygon(375px 0, 710px 0, 710px 530px, 469px 530px);
+    color: #fff;
+    background: linear-gradient(45deg, #082352, #6f2d52);
+    transition: all 0.6s ease-in-out;
+    transform-origin: 0 0;
+}
+
+.base.overlay.over {
+    -webkit-clip-path: polygon(-1750px 0, 710px 0, 710px 630px, 0 710px);
+    clip-path: polygon(-1750px 0, 710px 0, 710px 630px, 0 710px);
+}
+
+.base.overlay .logo svg {
+    fill: #fff;
+}
+
+.base.overlay .image {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.base.overlay .image::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    background: linear-gradient(42deg, #082352, #6f2d52);
+    opacity: 0.8;
+}
+
+.base.overlay .title {
+    background-image: linear-gradient(0, #fff, #fff);
+}
+
+.base.overlay .text {
+    color: #fff;
+}
+
+.base.overlay .cta {
+    background: #fff;
+    color: #0A2452;
+}
+
+.loader {
+    margin: 0 0 2em;
+    height: 100px;
+    width: 20%;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    display: inline-block;
+    vertical-align: top;
+}
+
+/*
+    Set the color of the icon
+*/
+/* svg path,
+svg rect {
+    fill: #FF6700;
+} */
+
+body{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(34, 34, 34);
+    margin: 0;
+}
+
+.container{
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container div{
+    position: relative;
+    width: 4%;
+    height: 4%;
+    background: linear-gradient(30deg, #1e1137 20%, #621d4b);
+    top: var(--y);
+    left: var(--x);
+    transform: skew(100deg, 30deg) translateX(-50%);
+    box-shadow: 10px 0px 10px 5px rgb(34, 34, 34);
+    border: 0.5px solid rgb(27, 27, 27);
+    animation-name: stack;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+    animation-delay: var(--delay);
+}
+
+@keyframes stack{
+    0%{
+        top: var(--y);
+    }
+    100%{
+        top: calc(99% - var(--y));
+    }
+}
+
+@media (orientation: portrait) {
+    .container div{
+        width: 10%;
+        height: 3%;
+    }
 }

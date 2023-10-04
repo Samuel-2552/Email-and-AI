@@ -3,6 +3,7 @@ import { useNylas } from '@nylas/nylas-react';
 import NylasLogin from './NylasLogin';
 import Layout from './components/Layout';
 import EmailApp from './EmailApp';
+import NylasLanding from './NylasLanding';
 
 function App() {
   const nylas = useNylas();
@@ -12,7 +13,7 @@ function App() {
   const [emails, setEmails] = useState([]);
   const [toastNotification, setToastNotification] = useState('');
   const SERVER_URI = import.meta.env.VITE_SERVER_URI || 'http://127.0.0.1:9000';
-
+  const [getStart, setGetStart] = useState(false);
   useEffect(() => {
     if (!nylas) {
       return;
@@ -26,6 +27,7 @@ function App() {
         .then((user) => {
           const { id } = JSON.parse(user);
           setUserId(id);
+          setGetStart(true);
           sessionStorage.setItem('userId', id);
         })
         .catch((error) => {
@@ -39,6 +41,7 @@ function App() {
     const userEmail = sessionStorage.getItem('userEmail');
     if (userIdString) {
       setUserId(userIdString);
+      setGetStart(true);
     }
     if (userEmail) {
       setUserEmail(userEmail);
@@ -67,7 +70,7 @@ function App() {
         },
       });
       const data = await res.json();
-      
+
       if (Array.isArray(data)) {
         setEmails(data);
       } else {
@@ -93,31 +96,38 @@ function App() {
   };
 
   return (
-    <Layout
+
+    <>
+    {
+      !getStart ? (<NylasLanding setGetStart={setGetStart}/>) : 
+      <Layout
       showMenu={!!userId}
       disconnectUser={disconnectUser}
       refresh={refresh}
       isLoading={isLoading}
-      title="Email sample app"
+      title="Email Attachments Summary and Insights"
       toastNotification={toastNotification}
       setToastNotification={setToastNotification}
     >
-      {!userId ? (
-        <NylasLogin email={userEmail} setEmail={setUserEmail} />
-      ) : (
-        <div className="app-card">
-          <EmailApp
-            userEmail={userEmail}
-            emails={emails}
-            isLoading={isLoading}
-            serverBaseUrl={SERVER_URI}
-            userId={userId}
-            reloadEmail={refresh}
-            setToastNotification={setToastNotification}
-          />
-        </div>
-      )}
+      {
+          !userId ? (
+            <NylasLogin email={userEmail} setEmail={setUserEmail} />
+          ) : (
+            <div className="app-card">
+              <EmailApp
+                userEmail={userEmail}
+                emails={emails}
+                isLoading={isLoading}
+                serverBaseUrl={SERVER_URI}
+                userId={userId}
+                reloadEmail={refresh}
+                setToastNotification={setToastNotification}
+              />
+            </div>
+          )}
     </Layout>
+    }
+    </>
   );
 }
 

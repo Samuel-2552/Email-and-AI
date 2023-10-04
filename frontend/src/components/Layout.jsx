@@ -4,6 +4,8 @@ import IconLogout from './icons/IconLogout.jsx';
 import NylasLogo from './icons/nylas-logo-horizontal.svg';
 import PropTypes from 'prop-types';
 import Toast from './Toast';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
 const Layout = ({
   children,
@@ -30,6 +32,10 @@ const Layout = ({
       setIsDisconnecting(false);
     }, 1500);
   };
+
+  const handleGetInsights = async (e) => {
+    await fetch()
+  }
 
   return (
     <div className="layout">
@@ -63,6 +69,17 @@ const Layout = ({
               </div>
               <span className="hidden-mobile">
                 {isDisconnecting ? 'Disconnecting...' : 'Disconnect account'}
+              </span>
+            </button>
+            <button
+              onClick={handleGetInsights}
+              disabled={isLoading || isDisconnecting || toastNotification}
+            >
+              <div className="menu-icon">
+                <FontAwesomeIcon icon={faLightbulb}/>
+              </div>
+              <span className="hidden-mobile">
+                Get Insights
               </span>
             </button>
           </div>
