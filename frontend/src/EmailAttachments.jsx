@@ -7,17 +7,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faFileImage, faFileExcel, faFileWord, faFilePowerpoint, faFile } from '@fortawesome/free-solid-svg-icons';
 import './styles/email.scss';
 
+function getInsights(){
+    return (
+        <div>
+            <img src="http:127.0.0.1:9000/static/graph1.png"/>
+            <img src="http:127.0.0.1:9000/static/graph2.png"/>
+            <img src="http:127.0.0.1:9000/static/graph3.png"/>
+            <img src="http:127.0.0.1:9000/static/graph4.png"/>
+            <img src="http:127.0.0.1:9000/static/graph5.png"/>
+            <img src="http:127.0.0.1:9000/static/graph6.png"/>
+        </div>
+    )
+}
 
 function EmailAttachments({
     emails,
     setToastNotification,
     serverBaseUrl,
-    userId
+    userId,
+    insights,
+    insightsclick
 }) {
     const [filename, setFileName] = useState('')
     const [data, setData] = useState('');
     const [error, setError] = useState(null);
     const [isImage, setIsImage] = useState(false);
+    // const graph = ['graph1.png', 'graph2.png', 'graph3.png', 'graph4.png', 'graph5.png', 'graph6.png']
 
     const icon = {
         'faFilePdf': <FontAwesomeIcon icon={faFilePdf}/>,
@@ -90,9 +105,13 @@ function EmailAttachments({
                 {filename !== ''?<h3>Summary of the {filename}</h3>:<span></span>}
                 {
                     isImage?<img src={data} className='graph_image'/>:data === '' && filename !== ''?<p className="loading" style={{color: 'white'}}>Loading emails...</p>:<h4><br/>{data}</h4>
-
                 }
-
+                {
+                    insightsclick?<p className="loading" style={{color: 'white'}}>Loading Insights...</p>:null
+                }
+                {
+                    insights? <getInsights/>:null
+                }
             </div>
         </>
     );

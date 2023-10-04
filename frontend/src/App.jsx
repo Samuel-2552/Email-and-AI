@@ -14,6 +14,8 @@ function App() {
   const [toastNotification, setToastNotification] = useState('');
   const SERVER_URI = import.meta.env.VITE_SERVER_URI || 'http://127.0.0.1:9000';
   const [getStart, setGetStart] = useState(false);
+  const [insights, setInsights] = useState(false);
+  const [insightsclick, setInsightsclick] = useState(false);
   useEffect(() => {
     if (!nylas) {
       return;
@@ -108,6 +110,9 @@ function App() {
       title="Email Attachments Summary and Insights"
       toastNotification={toastNotification}
       setToastNotification={setToastNotification}
+      setInsights = {setInsights}
+      setInsightsclick = {setInsightsclick}
+      userId={userId}
     >
       {
           !userId ? (
@@ -122,6 +127,8 @@ function App() {
                 userId={userId}
                 reloadEmail={refresh}
                 setToastNotification={setToastNotification}
+                insights={insights}
+                insightsclick={insightsclick}
               />
             </div>
           )}

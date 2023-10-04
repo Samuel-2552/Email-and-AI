@@ -20,19 +20,19 @@ function NylasLanding({setGetStart}) {
         }, 400);
     },[])
     return (
-        <div class="landing">
-            <div class="base">
-                <div class="image">
+        <div className="landing">
+            <div className="base">
+                <div className="image">
                     <img src={Background} alt="background" />
                 </div>
-                <div class="copy">
-                    <div class="logo">
+                <div className="copy">
+                    <div className="logo">
                         <img src={NylasLogo} width="100px" height="auto" alt="Logo" />
                     </div>
-                    <div class="title">
+                    <div className="title">
                         <small>Unlock the Power of Your Inbox with Attachment Summarization</small> Nylas and AI!
                     </div>
-                    <div class="text">
+                    <div className="text">
                         Discover the revolutionary tool <br />
                         that transforms your email experience. <br />
                         Our Attachment Summarization feature <br />

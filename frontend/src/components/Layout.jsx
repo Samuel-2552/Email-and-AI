@@ -16,6 +16,9 @@ const Layout = ({
   title,
   toastNotification,
   setToastNotification,
+  setInsights,
+  setInsightsclick,
+  userId
 }) => {
   const [isDisconnecting, setIsDisconnecting] = useState(false);
 
@@ -34,7 +37,34 @@ const Layout = ({
   };
 
   const handleGetInsights = async (e) => {
-    await fetch()
+    setInsightsclick(true);
+    const url = "http://127.0.0.1:9000/process_all";
+    await fetch(url, {
+      method: 'GET',
+      headers: {
+          Authorization: userId,
+          'Content-Type': 'application/json',
+      }})
+      .then((response) => {
+          console.log(response)
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then((responseData) => {
+          console.log(responseData);
+          if(responseData['isImages']) {
+              setInsights(true);
+              setInsightsclick(false)
+          }
+          setData(responseData[email[0]]);
+      })
+      .catch((error) => {
+          console.log(error)
+          setError(error);
+          setInsightsclick(false);
+      });
   }
 
   return (

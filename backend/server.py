@@ -22,6 +22,8 @@ import json
 import seaborn as sns
 import openpyxl
 matplotlib.use('Agg')
+from bs4 import BeautifulSoup
+from wordcloud import WordCloud
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -496,4 +498,110 @@ def summarization(text):
 # from huggingface_hub import InferenceClient
 # client = InferenceClient()
 # res = client.summarization("")
+@flask_app.route('/process_all', methods=['GET'])
+@is_authenticated
+def process_all():
+    message = nylas.messages
+    # Serialize the complex data
+    serialized_data = serialize_complex_data(message)
+
+    # Specify the file name and open it in write mode ('w')
+    file_name = "files/data.json"
+    with open(file_name, 'w', encoding='utf-8') as json_file:
+        # Write the serialized data to the file
+        json.dump(serialized_data, json_file, indent=4)
+
+    df=pd.read_json('files/data.json')
+    df["recived_day"]=df.received_at.dt.day
+    df["recived_hour"]=df.received_at.dt.hour
+    df["from_email"]=df["from"].apply(lambda x: x[0]["email"])
+    df["from_name"]=df["from"].apply(lambda x: x[0]["name"])
+    df["email_from"]=df["from"].apply(lambda x: x[0]["email"])
+    df["clean_content"]=df.body.apply(clean)
+
+    df["replied_to"]=df.reply_to.apply(lambda x:x[0]["email"] if x else "NO REPLY SENT")
+    df["file_type"]=df.files.apply(lambda x: x[0]["content_type"] if x else "NO ATTACHMENTS")
+    df5=pd.DataFrame(df.file_type.value_counts().reset_index())
+    print(df5.columns)
+#pie-chart
+    # print(df5['count'])
+    plt.pie(df5['fil'], labels=df5["file_type"],autopct="%.2f")
+    plt.ylabel("")
+    plt.savefig("graph1.png")
+
+    #df2 for bar plot
+    plt.figure(figsize=(8,5))
+    df2=df.from_email.value_counts().reset_index()[:5]
+    print(df2.head())
+    sns.barplot(data=df2,x="from_email",y="count")
+    plt.xticks(fontsize=8,rotation=8)
+    plt.savefig("graph2.png")
+
+    df_g=df.groupby("recived_hour",as_index=False).count()[["recived_hour","received_at"]]
+    plt.bar(df_g.recived_hour,df_g.received_at)
+    plt.savefig("graph3.png")
+    plt.xticks(range(0,24),range(0,24))
+
+    """This plot shows the number of mails recived per hour"""
+
+    #dummy keywords
+    keywords=['districts', 'fy', 'revenue', 'top', '5', 'any', 'growth', 'registration', 'that', 'there', 'list', 'down', 'between', 'what',
+            'or', 'are', 'have', '•', 'these', 'document', '2022?', 'during', 'vehicle', 'sales', 'investments', 'telangana', 'stamp', 'how', 'does', 'generated']
+
+    plt.figure(figsize=(4,4))
+    sns.jointplot(data=df,x="recived_day",y="recived_hour",kind="scatter")
+    plt.yticks(range(0,24),range(0,24))
+    plt.savefig("graph4.png")
+
+    text_data = " ".join(keywords)
+
+    wordcloud = WordCloud(width=800, height=400,background_color="cyan").generate(text_data)
+
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')  # Remove axis
+    plt.savefig("graph5.png")
+
+    df["content_length"]=df.clean_content.apply(len)
+
+#hist plot for knowing the distribution of the recived emails
+
+    sns.histplot(df.content_length,bins=30)
+    plt.xlim(0,18000)
+    plt.savefig("graph6.png")
+
+    return jsonify({'isImages':True})
+
+def clean(k):
+    html_string = k
+    soup = BeautifulSoup(html_string, 'html.parser')
+    plain_text = soup.get_text().replace('"', "'")
+    return plain_text
+def serialize_complex_data(data):
+    serialized_data = []
+    for item in data:
+        # Serialize custom objects or handle other non-serializable data as needed
+        received_at_str = item['received_at'].strftime('%Y-%m-%d %H:%M:%S')  # Convert datetime to string
+        serialized_item = {
+            'bcc': item['bcc'],
+            'cc': item['cc'],
+            'received_at': received_at_str,
+            'events': item['events'],
+            'files': item['files'],
+            'from': item['from'],
+            'to': item['to'],
+            'reply_to': item['reply_to'],
+            'object':item['object'],
+            'unread': item['unread'],
+            'starred':item['starred'],
+            '_labels': item['_labels'],
+            'snippet':item['snippet'],
+            'subject':item['subject'],
+            'body': item['body'],
+
+            # Add other serializable fields as needed
+        }
+        serialized_data.append(serialized_item)
+    return serialized_data
+
 

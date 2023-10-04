@@ -15,6 +15,8 @@ function EmailApp({
   userId,
   reloadEmail,
   setToastNotification,
+  insights,
+  insightsclick
 }) {
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [draftEmail, setDraftEmail] = useState(null);
@@ -92,7 +94,7 @@ function EmailApp({
           //   )}
           // </>
 
-            <EmailAttachments emails={emails} setToastNotification={setToastNotification} serverBaseUrl={serverBaseUrl} userId={userId}/>
+            <EmailAttachments emails={emails} setToastNotification={setToastNotification} serverBaseUrl={serverBaseUrl} userId={userId} insights={insights} insightsclick={insightsclick}/>
         
         ) : (
           <p className="loading-text">No available email</p>
