@@ -187,17 +187,17 @@ def after_request(response):
 def get_file_icon(filename):
     extension = filename.split('.')[-1].lower()
     if extension == 'pdf':
-        return 'fa fa-file-pdf-o'
+        return 'faFilePdf'
     elif extension == 'csv':
-        return 'fa fa-file-excel-o'
+        return 'faFileExcel'
     elif extension in ('jpg', 'jpeg', 'png'):
-        return 'fa fa-file-image-o'
+        return 'faFileImage'
     elif extension == 'xlsx':
-        return 'fa fa-file-excel-o'
+        return 'faFileExcel'
     elif extension == 'docx':
-        return 'fa fa-file-word-o'
+        return 'faFileWord'
     elif extension == 'pptx':
-        return 'fa fa-file-powerpoint-o'
+        return 'faFilePowerpoint'
     else:
         return 'fa fa-file'
 @flask_app.route('/download')
@@ -426,8 +426,7 @@ def process_file():
         return jsonify({filename:f"http://127.0.0.1:9000/static/summary_statistics.png?cb={cb}", 'isImage':True})
     
     elif extension == 'docx':
-        filename = "files/" + filename
-        doc = Document(filename)
+        doc = Document("files/" + filename)
         text = ''
 
         for paragraph in doc.paragraphs:
@@ -491,4 +490,8 @@ def summarization(text):
     # Print the summary
     print(summary)
     return summary
+
+# from huggingface_hub import InferenceClient
+# client = InferenceClient()
+# res = client.summarization("")
 

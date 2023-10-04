@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import '../src/styles/mystyle.css'
 import { useState } from 'react';
 import $ from 'jquery'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf, faFileImage, faFileExcel, faFileWord, faFilePowerpoint, faFile } from '@fortawesome/free-solid-svg-icons';
+
 
 function EmailAttachments({
     emails,
@@ -53,9 +56,20 @@ function EmailAttachments({
             <div className='att-container'>
                 {
                     emails.map(function (email, index) {
+                        email[0] = email[0].replace("_", " ");
+                        var logo = "";
+                        if(email[0].length >= 50){
+                            const ext = email[0].split('.').pop();
+                            const file = email[0].slice(0,-ext.length - 1);
+                            const trun_file = file.slice(0, 50 - ext.length - 1)
+                            email[0] = `${trun_file}...${ext}`
+                        }
                         return (
                             <div key={index} className='att-items' onClick={() => getInsights(email)}>
                                 <b>{email[0]}</b>
+                                <div className='logo'>
+                                    {logo}
+                                </div>
                             </div>
                         );
                     })

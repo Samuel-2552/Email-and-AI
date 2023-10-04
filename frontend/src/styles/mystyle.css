@@ -6,6 +6,15 @@
     border-radius: 15px;
 }
 
+.att-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    row-gap: 10px;
+    column-gap: 30px;
+}
+
 .att-items{
     border-radius: 10px;
     height: fit-content;
@@ -15,6 +24,8 @@
     flex-wrap: wrap;
     margin-bottom: 5px;
     cursor:pointer;
+    width: 30%;
+    height: 30%;
 }
 
 .graph_image{
