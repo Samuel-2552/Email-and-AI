@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+backend/datastore.json
+backend/.env
+frontend/node_modules
+datastore.json
 
 # C extensions
 *.so
