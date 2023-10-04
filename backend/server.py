@@ -2,7 +2,7 @@ import os
 from functools import wraps
 import time
 from utils.mock_db import db
-
+from huggingface_hub import InferenceClient
 from io import BytesIO
 from flask import Flask, request, send_file, g, jsonify, url_for
 from flask_cors import CORS
@@ -474,19 +474,21 @@ def pdf(filename):
     return text
 
 def summarization(text):
-    # Load the pre-trained BART model and tokenizer
-    model_name = "facebook/bart-large-cnn"
-    model = BartForConditionalGeneration.from_pretrained(model_name)
-    tokenizer = BartTokenizer.from_pretrained(model_name)
+    # # Load the pre-trained BART model and tokenizer
+    # model_name = "facebook/bart-large-cnn"
+    # model = BartForConditionalGeneration.from_pretrained(model_name)
+    # tokenizer = BartTokenizer.from_pretrained(model_name)
 
-    # Tokenize and encode the input text
-    inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True, padding=True)
+    # # Tokenize and encode the input text
+    # inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True, padding=True)
 
-    # Generate the summary
-    summary_ids = model.generate(inputs["input_ids"], num_beams=4, min_length=30, max_length=200, early_stopping=True)
+    # # Generate the summary
+    # summary_ids = model.generate(inputs["input_ids"], num_beams=4, min_length=30, max_length=200, early_stopping=True)
 
-    # Decode the generated summary
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    # # Decode the generated summary
+    # summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    client = InferenceClient()
+    summary = client.summarization(text)
 
     # Print the summary
     print(summary)
