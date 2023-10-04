@@ -58,7 +58,6 @@ const Layout = ({
               setInsights(true);
               setInsightsclick(false)
           }
-          setData(responseData[email[0]]);
       })
       .catch((error) => {
           console.log(error)

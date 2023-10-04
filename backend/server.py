@@ -525,21 +525,21 @@ def process_all():
     print(df5.columns)
 #pie-chart
     # print(df5['count'])
-    plt.pie(df5['fil'], labels=df5["file_type"],autopct="%.2f")
+    plt.pie(df5['file_type'], labels=df5["index"],autopct="%.2f")
     plt.ylabel("")
-    plt.savefig("graph1.png")
+    plt.savefig("static/graph1.png")
 
     #df2 for bar plot
     plt.figure(figsize=(8,5))
     df2=df.from_email.value_counts().reset_index()[:5]
     print(df2.head())
-    sns.barplot(data=df2,x="from_email",y="count")
+    sns.barplot(data=df2,x="from_email",y="index")
     plt.xticks(fontsize=8,rotation=8)
-    plt.savefig("graph2.png")
+    plt.savefig("static/graph2.png")
 
     df_g=df.groupby("recived_hour",as_index=False).count()[["recived_hour","received_at"]]
     plt.bar(df_g.recived_hour,df_g.received_at)
-    plt.savefig("graph3.png")
+    plt.savefig("static/graph3.png")
     plt.xticks(range(0,24),range(0,24))
 
     """This plot shows the number of mails recived per hour"""
@@ -551,7 +551,7 @@ def process_all():
     plt.figure(figsize=(4,4))
     sns.jointplot(data=df,x="recived_day",y="recived_hour",kind="scatter")
     plt.yticks(range(0,24),range(0,24))
-    plt.savefig("graph4.png")
+    plt.savefig("static/graph4.png")
 
     text_data = " ".join(keywords)
 
@@ -560,7 +560,7 @@ def process_all():
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')  # Remove axis
-    plt.savefig("graph5.png")
+    plt.savefig("static/graph5.png")
 
     df["content_length"]=df.clean_content.apply(len)
 
@@ -568,7 +568,7 @@ def process_all():
 
     sns.histplot(df.content_length,bins=30)
     plt.xlim(0,18000)
-    plt.savefig("graph6.png")
+    plt.savefig("static/graph6.png")
 
     return jsonify({'isImages':True})
 

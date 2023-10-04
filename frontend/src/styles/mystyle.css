@@ -1,9 +1,8 @@
-
 .att-container,
 .att-item-viewer {
     width: 50%;
     background-color: rgba(86, 85, 85, 0.129);
-    overflow:auto !important;
+    overflow: auto !important;
     padding: 5px;
     border-radius: 15px;
 }
@@ -17,12 +16,12 @@
     column-gap: 30px;
 }
 
-.att-item-viewer{
+.att-item-viewer {
     color: rgba(255, 255, 255, 0.719);
     position: relative;
 }
 
-.att-item-viewer .loading{
+.att-item-viewer .loading {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -31,11 +30,13 @@
     font-weight: bolder;
 }
 
-.att-container::-webkit-scrollbar, .att-item-viewer::-webkit-scrollbar{
+.att-container::-webkit-scrollbar,
+.att-item-viewer::-webkit-scrollbar {
     width: 10px;
 }
 
-.att-container::-webkit-scrollbar-thumb, .att-item-viewer::-webkit-scrollbar-thumb{
+.att-container::-webkit-scrollbar-thumb,
+.att-item-viewer::-webkit-scrollbar-thumb {
     background: #311739;
     border-radius: 5px;
 }
@@ -69,9 +70,26 @@
 }
 
 .file-logo svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
+
+.graph-images {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    row-gap: 20px;
+}
+
+.images {
+    width: 100%;
+    height: 40%;
+}
+
+/* Style for the full-screen image */
+
 
 *,
 *::before,
@@ -265,14 +283,14 @@ svg rect {
     fill: #FF6700;
 } */
 
-body{
+body {
     width: 100%;
     height: 100%;
     background-color: rgb(34, 34, 34);
     margin: 0;
 }
 
-.container{
+.container {
     position: absolute;
     width: 90%;
     height: 90%;
@@ -281,7 +299,7 @@ body{
     transform: translate(-50%, -50%);
 }
 
-.container div{
+.container div {
     position: relative;
     width: 4%;
     height: 4%;
@@ -299,17 +317,18 @@ body{
     animation-delay: var(--delay);
 }
 
-@keyframes stack{
-    0%{
+@keyframes stack {
+    0% {
         top: var(--y);
     }
-    100%{
+
+    100% {
         top: calc(99% - var(--y));
     }
 }
 
 @media (orientation: portrait) {
-    .container div{
+    .container div {
         width: 10%;
         height: 3%;
     }

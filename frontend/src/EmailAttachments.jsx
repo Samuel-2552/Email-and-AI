@@ -6,6 +6,7 @@ import $ from 'jquery'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faFileImage, faFileExcel, faFileWord, faFilePowerpoint, faFile } from '@fortawesome/free-solid-svg-icons';
 import './styles/email.scss';
+import Insights from './components/Insights';
 
 function getInsights(){
     return (
@@ -110,7 +111,7 @@ function EmailAttachments({
                     insightsclick?<p className="loading" style={{color: 'white'}}>Loading Insights...</p>:null
                 }
                 {
-                    insights? <getInsights/>:null
+                    insights? <Insights/>:null
                 }
             </div>
         </>
