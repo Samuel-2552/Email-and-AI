@@ -1,80 +1,89 @@
-# Send and read email Nylas sample app
+# AI Infused Inbox
 
-A Python implementation with Flask.
+![GitHub license](https://img.shields.io/github/license/Samuel-2552/Email-and-AI)
+![GitHub release (latest by date)](https://github.com/Samuel-2552/Email-and-AI.git)
+![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 
-## Requirements
+#### Description
 
-- Python 3.7 or later
-- [a .env file with your Quickstart app secrets](#set-up-your-env-file)
+AI Infused Inbox is a Flask web application developed for the Nylas and AI Hackathon. This application integrates with the **Nylas API** to fetch emails that contain attachments. It then uses **AI-powered algorithms** to analyze the type of attachment and extract its content, providing a summary to the user.
 
-### Python set up
+#### Features
 
-If you use a `python` backend for your demo application, make sure you have `python 3.7` or later installed. You can check what version you have by running:
+- *Fetch emails with attachments from your inbox.*
+- *Automatically classify attachment types (e.g., documents, images, PDFs).*
+- *Extract and summarize the content of attachments.*
+- *User-friendly web interface for easy interaction.*
+- *Real-time updates and notifications.*
 
-```bash
-python3 --version
-```
+#### Installation
 
-## Running this app independently
+1. Clone this repository:
 
-### Set up your `.env` file
+   shell
+   git clone https://github.com/Samuel-2552/Email-and-AI.git
+   
 
-Go to the Nylas Dashboard, and choose the Quickstart Application.
+2. Install the required dependencies for backend:
 
-Click **App Settings** to see the `client_id` and `client_secret` for the Quickstart app.
+   shell
+   pip install -r requirements.txt
+   
 
-Add these to a `.env` in this directory as in the example below.
+3. Set up your Nylas API credentials in `.env`:
 
-```yaml
-# Nylas application keys - see https://developer.nylas.com/docs/developer-guide/authentication/authorizing-api-requests/#sdk-authentication
-CLIENT_ID=client_id...
-CLIENT_SECRET=client_secret...
-```
+    NYLAS_CLIENT_ID='YOUR_CLIENT_ID'
+    NYLAS_CLIENT_SECRET='YOUR_CLIENT_SECRET'
+    NYLAS_API_SERVER='YOUR_API_SERVER'
 
-### Create and activate a new virtual environment
 
-**MacOS / Unix**
+4. Set up environment:
 
-```bash
-python3 -m venv env
-source env/bin/activate
-```
+   shell
+   cd backend
+   $env:FLASK_APP="./server.py"
 
-**Windows (PowerShell)**
 
-```bash
-python3 -m venv env
-.\env\Scripts\activate.bat
-```
+5. Run the Backend Application:
 
-### Install Python dependencies
+    shell
+    python -m flask run --port=9000
+    
+6. Install node.js:
+    
+    https://nodejs.org/en/download
 
-Run the following command to install the Python dependencies for this sample app.
+7. Frontend Installations:
+    
+    shell
+    cd frontend
+    npm install vite
+    npm install vite-config
+    npm install jquery
+    npm i --save @fortawesome/fontawesome-svg-core
+    npm install --save @fortawesome/free-solid-svg-icons
+    npm install --save @fortawesome/react-fontawesome
 
-```bash
-pip install -r requirements.txt
-```
+8. Run the Frontend Application:
 
-The `requirements.txt` in this sample already includes the Nylas package. If you were installing this on your own app, you would add the package as a dependency by running `pip install nylas`.
+    shell
+    npm run start
+    
 
-### Export and run the backend server locally
+   
+   
 
-Set your Flask app file, and start the backend server.
+#### Usage
 
-**MacOS / Unix**
+1. Visit `http://localhost:5000` in your web browser.
+2. Log in with your Nylas account.
+3. Explore your AI-infused inbox with automated content summaries!
 
-```bash
-export FLASK_APP=server.py
-python3 -m flask run --port=9000
-```
+#### Contributing
 
-**Windows (PowerShell)**
+Contributions are welcome! 
+*Please see our [contributing guidelines](CONTRIBUTING.md) for more details.*
 
-```bash
-$env:FLASK_APP=server.py
-python3 -m flask run --port=9000
-```
+#### License
 
-Your backend server is now running on `localhost:9000` and you can now make API calls, or start a frontend for this sample application to run on top of it.
-
-Start the backend before you start the frontend. You will need two terminal sessions so you can run both at the same time. (See the README file in the `frontend` folder for more information.)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
