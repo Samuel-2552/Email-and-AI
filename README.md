@@ -6,7 +6,7 @@
 
 #### [Youtube Link](https://youtu.be/dBADSJoyLpM)
 
-#### [Devpost Project Link] (https://devpost.com/software/ai-infused-inbox)
+#### [Devpost Project Link](https://devpost.com/software/ai-infused-inbox)
 
 #### Description
 
