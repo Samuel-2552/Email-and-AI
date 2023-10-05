@@ -4,9 +4,9 @@
 ![GitHub release (latest by date)](https://github.com/Samuel-2552/Email-and-AI.git)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 
-#### ![Youtube Link](https://youtu.be/dBADSJoyLpM)
+#### [Youtube Link](https://youtu.be/dBADSJoyLpM)
 
-#### ![Devpost Project Link] (https://devpost.com/software/ai-infused-inbox)
+#### [Devpost Project Link] (https://devpost.com/software/ai-infused-inbox)
 
 #### Description
 
