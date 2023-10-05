@@ -75,7 +75,7 @@ AI Infused Inbox is a Flask web application developed for the Nylas and AI Hacka
 
 #### Usage
 
-1. Visit `http://localhost:5000` in your web browser.
+1. Visit `http://localhost:3000` in your web browser.
 2. Log in with your Nylas account.
 3. Explore your AI-infused inbox with automated content summaries!
 
