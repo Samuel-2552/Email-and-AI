@@ -4,6 +4,10 @@
 ![GitHub release (latest by date)](https://github.com/Samuel-2552/Email-and-AI.git)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 
+#### ![Youtube Link](https://youtu.be/dBADSJoyLpM)
+
+#### ![Devpost Project Link] (https://devpost.com/software/ai-infused-inbox)
+
 #### Description
 
 AI Infused Inbox is a Flask web application developed for the Nylas and AI Hackathon. This application integrates with the **Nylas API** to fetch emails that contain attachments. It then uses **AI-powered algorithms** to analyze the type of attachment and extract its content, providing a summary to the user.
